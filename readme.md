@@ -10,6 +10,7 @@ Analytics as a Service (AaaS) refers to the provision of analytics software and 
 ### Scope
 The software will be a web service that will be used by businesses to visualize their consumer and product usage data to inform and measure their marketing. We will utilize the live product usage data to build insights and create dashboard for the business user. The dashboard will have rich data visualizations that will prove useful for building new marketing strategies. 
 
+![logo](datacloud.png)
 
 ### System Interface
 The web service system interface will consist of following components:
