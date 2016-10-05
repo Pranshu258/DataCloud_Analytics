@@ -16,6 +16,7 @@ The web service system interface will consist of following components:
 * Data Aggregator
 * Insights Generator
 * Data Visualizer 
+
 These components will work together to provide the user with useful data visualizations on the dashboard.
 
 ### Implementation Details
