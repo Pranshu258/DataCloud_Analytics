@@ -54,7 +54,10 @@ ROOT_URLCONF = 'datacloud.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'datacloud/templates',
+            'dashboard/templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
