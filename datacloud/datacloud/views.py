@@ -44,33 +44,14 @@ class LoginFormView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        # print("Client POST requested login.html")
-        # form = self.form_class(request.POST)
-        # if form.is_valid():
-        #     username = form.cleaned_data['username']
-        #     password = form.cleaned_data['password']
-        #     print("Form was valid")
-        #     user = authenticate(username=username, password=password)
-
-        #     if user is not None:
-        #         if user.is_active:
-        #             login(request, user)
-        #             return redirect('dashboard/')
-        #         else:
-        #             print("not active user")
-        #     else:
-        #         print("No such user")
-        # else:
-        #     print("Invalid Form")
-
-        # return HttpResponse("<h1>Login Failed</h1>")
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            login(request, user)
-            # Redirect to a success page.
-            return redirect('../dashboard/')
+            if user.is_active:
+                login(request, user)
+                # Redirect to a success page.
+                return redirect('../dashboard/')
         else:
             # Return an 'invalid login' error message.
             return HttpResponse("<h1>Login Failed</h1>")
