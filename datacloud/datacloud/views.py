@@ -10,9 +10,12 @@ class UserFormView(View):
     template_name = "datacloud/index.html"
 
     def get(self, request):
-        print("Client GET requested register.html")
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        if request.user.is_authenticated:
+            return redirect('dashboard/')
+        else:
+            print("Client GET requested register.html")
+            form = self.form_class(None)
+            return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         print("Client POST requested register.html")
@@ -39,9 +42,12 @@ class LoginFormView(View):
     template_name = "datacloud/login.html"
 
     def get(self, request):
-        print("Client GET requested login.html")
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        if request.user.is_authenticated:
+            return redirect('../dashboard/')
+        else:
+            print("Client GET requested login.html")
+            form = self.form_class(None)
+            return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         username = request.POST['username']
