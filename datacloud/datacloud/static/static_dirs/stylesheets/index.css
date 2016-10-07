@@ -1,0 +1,17 @@
+#intropane {
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: rgb(210,71,38);
+    color: #fff;
+}
+
+#contentpane {
+    padding: 5%;   
+}
+
+#registerpane {
+    padding-left: 3%;
+    padding-right: 3%;
+    height: 100vh;
+    background-color: rgb(240,240,240)
+}
