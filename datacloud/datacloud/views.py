@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.views.generic import View
-from .forms import UserForm
+from .forms import UserForm, LoginForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
@@ -32,3 +32,45 @@ class UserFormView(View):
                     return redirect('dashboard/')
 
         return render(request, self.template_name, {'form': form})
+
+
+class LoginFormView(View):
+    form_class = LoginForm
+    template_name = "datacloud/login.html"
+
+    def get(self, request):
+        print("Client GET requested login.html")
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        # print("Client POST requested login.html")
+        # form = self.form_class(request.POST)
+        # if form.is_valid():
+        #     username = form.cleaned_data['username']
+        #     password = form.cleaned_data['password']
+        #     print("Form was valid")
+        #     user = authenticate(username=username, password=password)
+
+        #     if user is not None:
+        #         if user.is_active:
+        #             login(request, user)
+        #             return redirect('dashboard/')
+        #         else:
+        #             print("not active user")
+        #     else:
+        #         print("No such user")
+        # else:
+        #     print("Invalid Form")
+
+        # return HttpResponse("<h1>Login Failed</h1>")
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            # Redirect to a success page.
+            return redirect('../dashboard/')
+        else:
+            # Return an 'invalid login' error message.
+            return HttpResponse("<h1>Login Failed</h1>")

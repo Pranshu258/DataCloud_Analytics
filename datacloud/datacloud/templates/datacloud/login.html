@@ -1,18 +1,15 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'datacloud/home.css' %}" />
 
-<h1>DataCloud Analytics</h1>
+<h1>Login</h1>
 
-<a href="login/">login</a>
-<br><br><hr><br>
+<br>
 
 <form action="" method="POST">
   {% csrf_token %}
   username:<br>
   <input type="text" name="username" value=""><br>
-  email:<br>
-  <input type="email" name="email" value=""><br>
   password:<br>
   <input type="password" name="password" value=""><br><br>
-  <input type="submit" value="Register">
+  <input type="submit" value="Login">
 </form>
