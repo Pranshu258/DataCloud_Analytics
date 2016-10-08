@@ -5,9 +5,13 @@ from django.contrib.auth import logout
 
 def index(request):
     if request.user.is_authenticated:
-        return HttpResponse("<h1>Hello, I am your Dashboard !!</h1><a href='logout/'>logout</a>")
+        template = loader.get_template('dashboard/dashboard.html')
+        context = {
+            'username': request.user.username
+        }
+        return HttpResponse(template.render(context, request))
     else:
-        return HttpResponse("<h1>You are not logged in !!!</h1>")
+        return redirect('../login/')
 
 def logout_view(request):
     logout(request)

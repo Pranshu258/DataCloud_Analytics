@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/dashboard.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'fonts/font.css' %}">
+	</head>
+	<body>
+		<!--Navigation Bar Header Begins-->
+		<header class="row-fluid" id="nav">
+			<div class="container">
+				<div class="row">
+					<ul class="pull-right" id="main_menu">
+                        <li class="muli">{{username}}</li>
+                        <li class="muli"><a href="logout/">sign out</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<!--Navigation Bar Header Ends-->
+
+
+        <div class="row-fluid">
+            <div class="col-sm-2 border-right" id="panel">
+
+            </div> 
+            <div class="col-sm-10" style="padding:0">
+    
+            </div>
+        </div>
+
+
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" ></script>
+	</body>
+</html>
