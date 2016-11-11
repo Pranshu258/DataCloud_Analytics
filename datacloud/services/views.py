@@ -2,18 +2,39 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from . import models
+import json
 
 # Create your views here.
 def api(request):
-    if request.user.is_authenticated:
-        rclient = request.GET.get('client')
-        rparam = request.GET.get('params')
+    rclient = request.GET.get('client')
+    rparam = request.GET.get('params')
+    if request.user.is_authenticated and request.user.username == rclient:
         # Create and send a JSON response
-        array = models.Activity.objects.all()
+        array = models.Activity.objects.filter(client=rclient)
+        
+        # Response if age demographics were asked
+        if rparam == 'age':
+            users = set()
+            data = [{"age":"<10", "population":0},{"age":"10-20", "population":0},{"age":"20-30", "population":0},{"age":"30-40", "population":0},{"age":"40-50", "population":0},{"age":"50-60", "population":0},{"age":">60", "population":0}]
+            for a in array:
+                if a.user not in users:
+                    age = a.age
+                    users.add(a.user)
+                    print(a.user)
+                    age_range = age % 10
+                    if (age_range < 7):
+                        data[age_range]['population'] += 1
+                    else:
+                        data[6]['population'] += 1
+            print(data)
+            return JsonResponse({'response':data})
+
+        # Response if gender demographics is asked 
+
         data = serializers.serialize("json", array, fields=(rparam))
         return JsonResponse({'response':data})
     else:
-        return HttpResponse("you are not logged in")
+        return HttpResponse("invalid request, either you are not authorized or request was malformed")
 
 def collect(request):
     # add assymetric key encryption here to protect the data that was sent
