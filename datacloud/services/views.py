@@ -45,6 +45,11 @@ def api(request):
             print(data)
             return JsonResponse({'response':data})
 
+        # Response if activity stats is asked
+        if rparam == 'activity':
+            data = [{"date":"24-Apr-07", "close":95},{"date":"25-Apr-07", "close":65},{"date":"26-Apr-07", "close":155},{"date":"27-Apr-07", "close":165},{"date":"30-Apr-07", "close":265}]
+            return JsonResponse({'response':data})
+            
         data = serializers.serialize("json", array, fields=(rparam))
         return JsonResponse({'response':data})
     else:

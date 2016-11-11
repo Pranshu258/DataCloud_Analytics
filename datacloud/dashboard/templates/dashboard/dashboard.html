@@ -10,6 +10,21 @@
 		.arc path {
 		    stroke: #fff;
 		}
+        body { font: 12px Arial;}
+
+        path { 
+            stroke: steelblue;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: grey;
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
 	</style>
     <head>
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
@@ -24,7 +39,6 @@
 			<div class="container">
 				<div class="row">
 					<ul class="pull-right" id="main_menu">
-                        <a href="/services/api" class="btn btn-info btn-sm" role="button">Get Data</a>
                         <li class="muli">{{username}}</li>
                         <li class="muli"><a href="logout/">sign out</a></li>
                         
@@ -42,11 +56,11 @@
                 <br><br><br><br>
                 <p>hello there1</p>
             </div> 
-            <div class="col-sm-10" id="plots">
-                <br><br><br>
+            <div class="col-sm-10" id="plots" style="margin-left:17%">
                 <div class="row-fluid">
                     <div class="row">
-                        <br><br><br>
+                        <h5 class="muli">User Activity Stats</h5>
+                        <div id="activityPlot"></div>
                     </div>
                     <hr><br>
                     <div class="row">
@@ -59,7 +73,7 @@
                             <div id="genderChart"></div>
                         </div>
                         <div class="col-sm-4" id="stats">
-                            <h1 class="josephin big" id="totalUsers">123</h1>
+                            <h1 class="josephin" id="totalUsers" style="font-size: 600%;"></h1>
                             <p class="muli">Total Users</p>
                         </div>
                     </div>
@@ -68,6 +82,72 @@
         </div>
 
         <script>
+
+            // Set the dimensions of the canvas / graph
+            var margin1 = {top: 30, right: 30, bottom: 30, left: 50},
+                width1 = 1000 - margin1.left - margin1.right,
+                height1 = 400 - margin1.top - margin1.bottom;
+
+            // Parse the date / time
+            var parseDate = d3.time.format("%d-%b-%y").parse;
+
+            // Set the ranges
+            var x1 = d3.time.scale().range([0, width1]);
+            var y1 = d3.scale.linear().range([height1, 0]);
+
+            // Define the axes
+            var xAxis1 = d3.svg.axis().scale(x1)
+                .orient("bottom").ticks(5);
+
+            var yAxis1 = d3.svg.axis().scale(y1)
+                .orient("left").ticks(5);
+
+            // Define the line
+            var valueline1 = d3.svg.line()
+                .x(function(d) { return x1(d.date); })
+                .y(function(d) { return y1(d.close); });
+                
+            // Adds the svg canvas
+            var svg1 = d3.select("#activityPlot")
+                .append("svg")
+                    .attr("width", width1 + margin1.left + margin1.right)
+                    .attr("height", height1 + margin1.top + margin1.bottom)
+                .append("g")
+                    .attr("transform", 
+                        "translate(" + margin1.left + "," + margin1.top + ")");
+
+            // Get the data
+            d3.json("/services/api?client=" + "{{username}}" + "&params=activity", function(error, resp) {
+
+                data = resp.response
+
+                data.forEach(function(d) {
+                    d.date = parseDate(d.date);
+                    d.close = +d.close;
+                });
+
+                // Scale the range of the data
+                x1.domain(d3.extent(data, function(d) { return d.date; }));
+                y1.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+                // Add the valueline path.
+                svg1.append("path")
+                    .attr("class", "line")
+                    .attr("d", valueline1(data));
+
+                // Add the X Axis
+                svg1.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height1 + ")")
+                    .call(xAxis1);
+
+                // Add the Y Axis
+                svg1.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis1);
+
+            });
+
             ///////////////////////////////////////////////////////////////////////////////////////
             // GENERAL VALUES FOR THE PIE CHART
             var width = 300,
