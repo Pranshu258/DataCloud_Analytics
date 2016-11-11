@@ -47,9 +47,25 @@ def api(request):
 
         # Response if activity stats is asked
         if rparam == 'activity':
-            data = [{"date":"24-Apr-07", "close":95},{"date":"25-Apr-07", "close":65},{"date":"26-Apr-07", "close":155},{"date":"27-Apr-07", "close":165},{"date":"30-Apr-07", "close":265}]
-            return JsonResponse({'response':data})
+            # data = [{"date":"24-Apr-07", "close":95},{"date":"25-Apr-07", "close":65},{"date":"26-Apr-07", "close":155},{"date":"27-Apr-07", "close":165},{"date":"30-Apr-07", "close":265}]
+            mont = ['Jan', 'Feb', 'Apr', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec']
+            resp = {}
+            for a in array:
+                ts = a.timestamp
+                datestr = str(ts.day) + "-" + mont[ts.month - 1] + "-" + str(ts.year)
+                if datestr not in resp:
+                    resp[datestr] = 1
+                else:
+                    resp[datestr] += 1
             
+            data = [{"date":"01-Nov-2016", "close":0}]
+            for key in resp:
+                data.append({"date":key, "close":resp[key]})
+
+            print(data)
+
+            return JsonResponse({'response':data})
+
         data = serializers.serialize("json", array, fields=(rparam))
         return JsonResponse({'response':data})
     else:
