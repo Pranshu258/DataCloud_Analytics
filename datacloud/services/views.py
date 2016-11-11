@@ -30,6 +30,20 @@ def api(request):
             return JsonResponse({'response':data})
 
         # Response if gender demographics is asked 
+        if rparam == 'gender':
+            users = set()
+            data = [{"gender":"M", "population":0},{"gender":"F", "population":0}]
+            for a in array:
+                if a.user not in users:
+                    gender = a.gender
+                    users.add(a.user)
+                    print(a.user)
+                    if gender == "M":
+                        data[0]['population'] += 1
+                    else:
+                        data[1]['population'] += 1
+            print(data)
+            return JsonResponse({'response':data})
 
         data = serializers.serialize("json", array, fields=(rparam))
         return JsonResponse({'response':data})
