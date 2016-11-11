@@ -52,6 +52,7 @@ def api(request):
             resp = {}
             for a in array:
                 ts = a.timestamp
+                print(ts)
                 datestr = str(ts.day) + "-" + mont[ts.month - 1] + "-" + str(ts.year)
                 if datestr not in resp:
                     resp[datestr] = 1
