@@ -4,11 +4,11 @@
 <html lang="en">
 	<style>
 		.arc text {
-		font: 10px sans-serif;
-		text-anchor: middle;
+            font: 10px sans-serif;
+            text-anchor: middle;
 		}
 		.arc path {
-		stroke: #fff;
+		    stroke: #fff;
 		}
 	</style>
     <head>
@@ -42,98 +42,121 @@
                 <br><br><br><br>
                 <p>hello there1</p>
             </div> 
-            <div class="col-sm-10" style="padding:0">
+            <div class="col-sm-10" id="plots">
                 <br><br><br>
-                <script>
-                    ///////////////////////////////////////////////////////////////////////////////////////
-                    // GENERAL VALUES FOR THE PIE CHART
-                    var width = 960,
-                        height = 500,
-                        radius = Math.min(width, height) / 2;
-
-                    var arc = d3.svg.arc()
-                        .outerRadius(radius - 10)
-                        .innerRadius(0);
-
-                    var labelArc = d3.svg.arc()
-                        .outerRadius(radius - 40)
-                        .innerRadius(radius - 40);
-
-                    var pie = d3.layout.pie()
-                        .sort(null)
-                        .value(function(d) { return d.population; });
-
-                    //////////////////////////////////////////////////////////////////////////////////////////
-                    // PIE CHART FOR AGE
-                    var color1 = d3.scale.ordinal()
-                        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-                    var svg = d3.select("body").append("svg")
-                        .attr("width", width)
-                        .attr("height", height)
-                        .append("g")
-                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-                    d3.json("/services/api?client=" + "{{username}}" + "&params=age", function(error, resp) {
-                        data = resp.response
-                        
-                        console.log(data);
-
-                        if (error) console.log(error);
-                        
-                        var g = svg.selectAll(".arc")
-                            .data(pie(data))
-                            .enter().append("g")
-                            .attr("class", "arc");
-
-                        g.append("path")
-                            .attr("d", arc)
-                            .style("fill", function(d) { return color1(d.data.age); });
-
-                        g.append("text")
-                            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-                            .attr("dy", ".35em")
-                            .text(function(d) { return d.data.age; });
-                    });
-
-                    //////////////////////////////////////////////////////////////////////////////////////////
-                    // PIE CHART FOR GENDER
-                    var color2 = d3.scale.ordinal()
-                        .range(["green", "yellow"]);
-
-                    var svg2 = d3.select("body").append("svg")
-                        .attr("width", width)
-                        .attr("height", height)
-                        .append("g")
-                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-                    d3.json("/services/api?client=" + "{{username}}" + "&params=gender", function(error, resp) {
-                        data = resp.response
-                        
-                        console.log(data);
-
-                        if (error) console.log(error);
-                        
-                        var g = svg2.selectAll(".arc")
-                            .data(pie(data))
-                            .enter().append("g")
-                            .attr("class", "arc");
-
-                        g.append("path")
-                            .attr("d", arc)
-                            .style("fill", function(d) { return color2(d.data.gender); });
-
-                        g.append("text")
-                            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-                            .attr("dy", ".35em")
-                            .text(function(d) { return d.data.gender; });
-                    });
-
-                    ///////////////////////////////////////////////////////////////////////////////////////////////
-
-                </script>
+                <div class="row-fluid">
+                    <div class="row">
+                        <br><br><br>
+                    </div>
+                    <hr><br>
+                    <div class="row">
+                        <div class="col-sm-4" >
+                            <h5 class="muli">Age Stats</h5>
+                            <div id="ageChart"></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <h5 class="muli">Gender Stats</h5>
+                            <div id="genderChart"></div>
+                        </div>
+                        <div class="col-sm-4" id="stats">
+                            <h1 class="josephin big" id="totalUsers">123</h1>
+                            <p class="muli">Total Users</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <script>
+            ///////////////////////////////////////////////////////////////////////////////////////
+            // GENERAL VALUES FOR THE PIE CHART
+            var width = 300,
+                height = 300,
+                radius = Math.min(width, height) / 2;
+
+            var arc = d3.svg.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(40);
+
+            var labelArc = d3.svg.arc()
+                .outerRadius(radius - 40)
+                .innerRadius(radius - 40);
+
+            var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) { return d.population; });
+
+            //////////////////////////////////////////////////////////////////////////////////////////
+            // PIE CHART FOR AGE
+            var color1 = d3.scale.ordinal()
+                .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+            var svg = d3.select("#ageChart").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            d3.json("/services/api?client=" + "{{username}}" + "&params=age", function(error, resp) {
+                data = resp.response
+                
+                console.log(data);
+
+                if (error) console.log(error);
+                
+                var g = svg.selectAll(".arc")
+                    .data(pie(data))
+                    .enter().append("g")
+                    .attr("class", "arc");
+
+                g.append("path")
+                    .attr("d", arc)
+                    .style("fill", function(d) { return color1(d.data.age); });
+
+                g.append("text")
+                    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+                    .attr("dy", ".35em")
+                    .text(function(d) { return d.data.age; });
+            });
+
+            //////////////////////////////////////////////////////////////////////////////////////////
+            // PIE CHART FOR GENDER
+            var color2 = d3.scale.ordinal()
+                .range(["#5793F3", "#DD4444"]);
+
+            var svg2 = d3.select("#genderChart").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            d3.json("/services/api?client=" + "{{username}}" + "&params=gender", function(error, resp) {
+                data = resp.response
+                numbers = data[0]['population'] + data[1]['population'];
+                d3.select("#totalUsers").text(numbers);
+
+                console.log(data);
+
+                if (error) console.log(error);
+                
+                var g = svg2.selectAll(".arc")
+                    .data(pie(data))
+                    .enter().append("g")
+                    .attr("class", "arc");
+
+                g.append("path")
+                    .attr("d", arc)
+                    .style("fill", function(d) { return color2(d.data.gender); });
+
+                g.append("text")
+                    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+                    .attr("dy", ".35em")
+                    .text(function(d) { return d.data.gender; });
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+
+        </script>
 
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" ></script>
 	</body>

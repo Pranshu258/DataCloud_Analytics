@@ -16,5 +16,13 @@
     height: 100vh;
     background-color: rgb(35,35,30);
     color: #fff;
-    z-index: 1000;
+}
+
+#plots {
+  padding: 3%
+}
+
+#stats {
+  padding: 2%;
+  text-align: right;
 }
