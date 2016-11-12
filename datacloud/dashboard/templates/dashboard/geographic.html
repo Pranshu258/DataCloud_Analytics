@@ -56,26 +56,33 @@
 
             function drawRegionsMap() {
 
-                var jsonData = {
-                    "cols": [
-                        {"id":"","label":"Country","pattern":"","type":"string"},
-                        {"id":"","label":"Activity","pattern":"","type":"number"}
-                    ],
-                    "rows": [
-                        {"c":[{"v":"Brazil","f":null},{"v":300,"f":null}]},
-                        {"c":[{"v":"France","f":null},{"v":700,"f":null}]},
-                        {"c":[{"v":"Canada","f":null},{"v":200,"f":null}]},
-                    ]
-                }
+                var data = null;
 
+                var xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
 
-                var data = new google.visualization.DataTable(jsonData);
+                xhr.addEventListener("readystatechange", function () {
+                    if (this.readyState === 4) {
+                        console.log(this.responseText);
 
-                var options = {};
+                        var jsonData = this.responseText;
 
-                var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+                        var data = new google.visualization.DataTable(jsonData);
 
-                chart.draw(data, options);
+                        var options = {};
+
+                        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+                        chart.draw(data, options);
+                    }
+                });
+
+                xhr.open("GET", "/services/api?client=pranshug&params=geoactivity");
+                xhr.setRequestHeader("cache-control", "no-cache");
+                xhr.setRequestHeader("postman-token", "76f3768c-a183-04f6-8273-3af9cebc224b");
+
+                xhr.send(data);
+
             }              
         </script>
 

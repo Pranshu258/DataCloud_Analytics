@@ -68,7 +68,22 @@ def api(request):
             return JsonResponse({'response':data})
 
         if rparam == 'geoactivity':
-            pass
+            geo = {}
+            for a in array:
+                country = a.location.upper()
+                if country not in geo:
+                    geo[country] = 1
+                else:
+                    geo[country] += 1
+            # print(geo)
+            respdata = {"cols": [{"id":"","label":"Country","pattern":"","type":"string"},{"id":"","label":"Activity","pattern":"","type":"number"}],"rows": []}
+            # {"c":[{"v":"Brazil","f":null},{"v":300,"f":null}]}
+            for key in geo:
+                d = {"c":[{"v":key,"f":None},{"v":geo[key],"f":None}]}
+                respdata["rows"].append(d)
+            print(respdata)
+            return JsonResponse(respdata)
+
 
         data = serializers.serialize("json", array, fields=(rparam))
         return JsonResponse({'response':data})
