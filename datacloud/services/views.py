@@ -67,6 +67,9 @@ def api(request):
 
             return JsonResponse({'response':data})
 
+        if rparam == 'geoactivity':
+            pass
+
         data = serializers.serialize("json", array, fields=(rparam))
         return JsonResponse({'response':data})
     else:
