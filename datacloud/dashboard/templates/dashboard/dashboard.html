@@ -103,20 +103,21 @@
             var parseDate = d3.time.format("%d-%b-%Y").parse;
 
             // Set the ranges
-            var x1 = d3.time.scale().range([0, width1]);
-            var y1 = d3.scale.linear().range([height1, 0]);
+            var x = d3.time.scale().range([0, width1]);
+            var y = d3.scale.linear().range([height1, 0]);
 
             // Define the axes
-            var xAxis1 = d3.svg.axis().scale(x1)
+            var xAxis = d3.svg.axis().scale(x)
                 .orient("bottom").ticks(5);
 
-            var yAxis1 = d3.svg.axis().scale(y1)
+            var yAxis = d3.svg.axis().scale(y)
                 .orient("left").ticks(5);
 
             // Define the line
-            var valueline1 = d3.svg.line()
-                .x(function(d) { return x1(d.date); })
-                .y(function(d) { return y1(d.close); });
+            var valueline = d3.svg.line()
+                .interpolate("linear")
+                .x(function(d) { return x(d.date); })
+                .y(function(d) { return y(d.close); });
                 
             // Adds the svg canvas
             var svg1 = d3.select("#activityPlot")
@@ -131,31 +132,36 @@
             d3.json("/services/api?client=" + "{{username}}" + "&params=activity", function(error, resp) {
 
                 data = resp.response
+                //ad = [{'date': '01-Nov-2016', 'close': 0}, {'date': '12-Nov-2016', 'close': 8}, {'date': '11-Nov-2016', 'close': 40}]
 
                 data.forEach(function(d) {
                     d.date = parseDate(d.date);
                     d.close = +d.close;
                 });
 
+                console.log(data)
+                data = data.sort(function(a, b) {return a.date - b.date; });
+                
+
                 // Scale the range of the data
-                x1.domain(d3.extent(data, function(d) { return d.date; }));
-                y1.domain([0, d3.max(data, function(d) { return d.close; })]);
+                x.domain(d3.extent(data, function(d) { return d.date; }));
+                y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
                 // Add the valueline path.
                 svg1.append("path")
                     .attr("class", "line")
-                    .attr("d", valueline1(data));
+                    .attr("d", valueline(data));
 
                 // Add the X Axis
                 svg1.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + height1 + ")")
-                    .call(xAxis1);
+                    .call(xAxis);
 
                 // Add the Y Axis
                 svg1.append("g")
                     .attr("class", "y axis")
-                    .call(yAxis1);
+                    .call(yAxis);
 
             });
 
