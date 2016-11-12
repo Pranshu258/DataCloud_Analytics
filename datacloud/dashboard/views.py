@@ -13,6 +13,16 @@ def index(request):
     else:
         return redirect('../login/')
 
+def geographic(request):
+    if request.user.is_authenticated:
+        template = loader.get_template('dashboard/geographic.html')
+        context = {
+            'username': request.user.username
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirect('../login/')
+
 def logout_view(request):
     logout(request)
     return redirect('/')

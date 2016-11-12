@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/dashboard.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'fonts/font.css' %}">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	</head>
+	<body>
+		<!--Navigation Bar Header Begins-->
+		<header class="row-fluid" id="nav">
+			<div class="container">
+				<div class="row">
+					<ul class="pull-right" id="main_menu">
+                        <li class="muli">{{username}}</li>
+                        <li class="muli"><a href="logout/">sign out</a></li>         
+					</ul>
+				</div>
+			</div>
+		</header>
+		<!--Navigation Bar Header Ends-->
+        
+        
+        <p>Welcome !!!</p>
+
+        <div class="row-fluid">            
+            <div class="col-sm-2 border-right muli" id="panel">
+                <br>
+                <a href="/">
+                    <div class="row" id="link">
+                        General Stats
+                    </div>
+                </a>
+                <a href="">
+                    <div class="row" id="link" style="background-color:#666">
+                        Geographic Stats
+                    </div>
+                </a>
+            </div> 
+            <div class="col-sm-10" id="plots" style="margin-left:17%">
+                <div class="row-fluid">
+                    <div class="row">
+                        <h5 class="muli">Geographic Stats</h5>
+                        <div id="regions_div" style="width: 1000px; height: 600px;"></div>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+
+        <script>
+            google.charts.load('upcoming', {'packages':['geochart']});
+            google.charts.setOnLoadCallback(drawRegionsMap);
+
+            function drawRegionsMap() {
+
+                var jsonData = {
+                    "cols": [
+                        {"id":"","label":"Country","pattern":"","type":"string"},
+                        {"id":"","label":"Popularity","pattern":"","type":"number"}
+                    ],
+                    "rows": [
+                        {"c":[{"v":"Brazil","f":null},{"v":300,"f":null}]},
+                        {"c":[{"v":"France","f":null},{"v":700,"f":null}]},
+                        {"c":[{"v":"Canada","f":null},{"v":200,"f":null}]},
+                    ]
+                }
+
+
+                var data = new google.visualization.DataTable(jsonData);
+
+                var options = {};
+
+                var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+                chart.draw(data, options);
+            }              
+        </script>
+
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" ></script>
+	</body>
+</html>
