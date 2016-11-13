@@ -36,3 +36,44 @@ We chose Django because of following points:
 * Infact Shiny itself is built upon D3.js and Google Charts. An D3.js literally has HUGE number of examples available on the web to get inspired from.
 * We have also used Google Charts. We found that the code we have to write is less verbose as compared to D3 and in a few cases quality of charts rendered by Google Charts is superior to D3 (e.g. Geographical Charts). We might consider moving entirely to Google Charts.
 
+### How to switch from SQLite to PostgreSQL?
+* Stop the Django server
+* Dump the data from SQLite DB to a JSON file:
+
+    `python manage.py dumpdata > dump.json`
+
+* Change the database settings in settings.py:
+    
+    `DATABASES = {`
+
+        'default': {
+        
+            'ENGINE': 'django.db.backends.postgresql',
+ 
+            'NAME': 'mydatabase',
+ 
+            'USER': 'mydatabaseuser',
+ 
+            'PASSWORD': 'mypassword',
+ 
+            'HOST': '127.0.0.1',
+ 
+            'PORT': '5432',
+ 
+        }
+ 
+    `}`
+
+* Run the following commands:
+
+    `python manage.py makemigrations`
+
+    `python manage.py migrate`
+
+    `python manage.py loaddata dump.json`
+
+* Start the server
+
+For this to work you must already have created a user named datacloud in the PostgreSQL server
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
+http://stackoverflow.com/questions/28253681/you-need-to-install-postgresql-server-dev-x-y-for-building-a-server-side-extensi
