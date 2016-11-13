@@ -77,3 +77,4 @@ We chose Django because of following points:
 For this to work you must already have created a user named datacloud in the PostgreSQL server
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
 http://stackoverflow.com/questions/28253681/you-need-to-install-postgresql-server-dev-x-y-for-building-a-server-side-extensi
+http://stackoverflow.com/questions/12720967/how-to-change-postgresql-user-password
