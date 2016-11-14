@@ -91,9 +91,7 @@ def api(request):
         return HttpResponse("invalid request, either you are not authorized or request was malformed")
 
 def collect(request):
-    # add assymetric key encryption here to protect the data that was sent
-    ######################################################################
-
+    print(request.META.get('HTTP_REFERER'))
     # Following parameters are recieved via the get request
     rclient = request.GET.get("client")
     ractivity = request.GET.get("activity")
