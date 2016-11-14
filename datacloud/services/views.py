@@ -21,7 +21,7 @@ def api(request):
                     age = a.age
                     users.add(a.user)
                     print(a.user)
-                    age_range = age % 10
+                    age_range = int(age/10)
                     if (age_range < 7):
                         data[age_range]['population'] += 1
                     else:
